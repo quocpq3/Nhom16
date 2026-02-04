@@ -10,53 +10,48 @@ fetch(postApi)
   })
   .then(function (posts) {
     console.log(posts);
-    let htmls = posts.map((post) => {
-      return `
-    <div
-      class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default"
-    >
+
+    let tableHtml = `
+    <div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
       <table class="w-full text-sm text-left rtl:text-right text-body">
-        <thead
-          class="text-sm text-body bg-neutral-secondary-medium border-b border-t border-default-medium"
-        >
+        <thead class="text-sm text-body bg-neutral-secondary-medium border-b border-t border-default-medium">
           <tr>
-
-            <th scope="col" class="px-6 py-3  font-medium">ID</th>
-            <th scope="col" class="px-6 py-3 w-[70%] font-medium">Avatar</th>
-            <th scope="col" class="px-6 py-3 font-medium">Action</th>
-
+            <th scope="col" class="px-6 py-3 font-medium">ID</th>
+            <th scope="col" class="px-6 py-3 font-medium">Avatar</th>
+            <th scope="col" class="px-6 py-3 font-medium">Tên</th>
+            <th scope="col" class="px-6 py-3 font-medium">Hành động</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="bg-neutral-primary-soft hover:bg-neutral-secondary-medium">
-          <th scope="row" class="px-6 py-4 font-medium">${post.id}</th>
-            <th
-              scope="row"
-              class="flex items-center px-6 py-4 font-medium text-heading whitespace-nowrap"
-            >
-              <img
-                class="w-10 h-10 rounded-full"
-                src="${post.avatar}"
-                alt="Jese image"
-              />
-              <div class="ps-3">
-                <div class="font-normal text-body">${post.name}</div>
-              </div>
-            </th>
-            <th>
-            <a href="#" onclick="openEditForm(${post.id}, '${post.name}', '${post.avatar}'); return false;" class="font-medium text-fg-brand hover:underline"><i class="fa-solid fa-user-pen"></i></a>
-            <a href="#" class="text-red-700" onclick="deleteUserById(${post.id}); return false;" class="font-medium text-fg-danger hover:underline ps-4"><i class="fa-solid fa-trash-can"></i></a>
-            </th>
+    `;
+
+    posts.forEach((post) => {
+      tableHtml += `
+          <tr class="bg-neutral-primary-soft hover:bg-neutral-secondary-medium border-b border-default">
+            <td class="px-6 py-4 font-medium">${post.id}</td>
+            <td class="px-6 py-4">
+              <img class="w-10 h-10 rounded-full" src="${post.avatar}" alt="Avatar" />
+            </td>
+            <td class="px-6 py-4 font-medium text-heading">${post.name}</td>
+            <td class="px-6 py-4 space-x-3">
+              <a href="#" onclick="openEditForm(${post.id}, '${post.name}', '${post.avatar}'); return false;" class="text-blue-600 hover:underline" title="Chỉnh sửa">
+                <i class="fa-solid fa-user-pen"></i>
+              </a>
+              <a href="#" onclick="deleteUserById(${post.id}); return false;" class="text-red-700 hover:underline" title="Xóa">
+                <i class="fa-solid fa-trash-can"></i>
+              </a>
+            </td>
           </tr>
+      `;
+    });
+
+    tableHtml += `
         </tbody>
       </table>
     </div>
+    `;
 
-`;
-    });
-
-    let html = htmls.join("");
-    document.getElementById("postBlock").innerHTML = html;
+    document.getElementById("postBlock").innerHTML = tableHtml;
   })
   //case lấy postApi thất bại
   .catch(function (err) {
